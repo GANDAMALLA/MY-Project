@@ -1,0 +1,15 @@
+pipeline{
+	agent any{
+	
+	enivironment{
+		My_Var='My First Pipeline Script'
+		}
+		Satges{
+			Stage('Checkout'){
+				steps{
+					gitRepoUrl: 'https://github.com/GANDAMALLA/MY-Project.git', branch: 'master'
+					}
+				}
+			}
+		}
+	}
