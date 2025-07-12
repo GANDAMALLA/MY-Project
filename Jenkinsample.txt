@@ -3,13 +3,23 @@ pipeline{
 	
 	enivironment{
 		My_Var='My First Pipeline Script'
+		echo '$My_Var'
 		}
-		Satges{
-			Stage('Checkout'){
-				steps{
-					gitRepoUrl: 'https://github.com/GANDAMALLA/MY-Project.git', branch: 'master'
+	Satges{
+		Stage('Checkout'){
+			steps{
+				script {
+				def gitRepoUrl = 'https://github.com/GANDAMALLA/MY-Project.git'
+
+                   checkout([$class: 'GitSCM', 
+                        branches: [[name: '*/master']], 
+                        userRemoteConfigs: [[url: gitRepoUrl]], 
+                        extensions: [[$class: 'CleanBeforeCheckout'], [$class: 'CloneOption', noTags: false, shallow: true, depth: 1]]
 					}
 				}
 			}
 		}
 	}
+	
+}
+	
