@@ -8,7 +8,7 @@ pipeline{
 	stages{
 		stage('Checkout'){
 			steps{
-				echo "${env.My_Var}" // Print environment variable
+				echo "${My_Var}" // Print environment variable
 				script {
 				def gitRepoUrl = 'https://github.com/GANDAMALLA/MY-Project.git'
 
