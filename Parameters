@@ -1,0 +1,37 @@
+pipeline{
+	agent any
+	
+	environment{
+		My_Var='My First Pipeline Script'
+		
+		}
+	stages{
+		stage('Checkout'){
+			steps{
+				echo "${My_Var}" // Print environment variable
+				script {
+				def gitRepoUrl = 'https://github.com/GANDAMALLA/MY-Project.git'
+
+                   checkout([$class: 'GitSCM', 
+                        branches: [[name: '*/master']], 
+                        userRemoteConfigs: [[url: gitRepoUrl]], 
+                        extensions: [[$class: 'CleanBeforeCheckout'], [$class: 'CloneOption', noTags: false, shallow: true, depth: 1]]
+					])
+				}
+			}
+		}
+		stage('Deploy'){
+			input{
+				message 'Deploy?'
+				ok 'Do it!'
+				parameters{
+					string(name: 'TARGET_ENVIRONMENT', defaultValue: 'PROD', description: 'Target deployment environment')
+					}
+				}
+			steps{
+				echo "This is my parameters passing script"
+				}
+		}
+	}
+}
+	
