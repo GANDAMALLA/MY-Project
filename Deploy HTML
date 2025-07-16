@@ -1,0 +1,32 @@
+pipeline{
+	agent any
+	
+	environment{
+		My_Var='My First Pipeline Script'
+		
+		}
+	stages{
+		stage('Checkout'){
+			steps{
+				echo "${My_Var}" // Print environment variable
+				script {
+				def gitRepoUrl = 'https://github.com/GANDAMALLA/MY-Project.git'
+
+                   checkout([$class: 'GitSCM', 
+                        branches: [[name: '*/master']], 
+                        userRemoteConfigs: [[url: gitRepoUrl]], 
+                        extensions: [[$class: 'CleanBeforeCheckout'], [$class: 'CloneOption', noTags: false, shallow: true, depth: 1]]
+					])
+				}
+			}
+		}
+		stage('Build') {
+        		steps {
+          			echo "Building version: ${VERSION} with suffix: ${RELEASE_VERSION}"
+          			echo 'Mention your Application Build Code here!!!'
+          			sh 'mvn -f java-tomcat-sample/pom.xml clean package'
+        		}
+      		}
+	}
+}
+	
